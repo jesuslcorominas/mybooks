@@ -25,6 +25,8 @@ class MainActivity : AppCompatActivity() {
             MainViewModelFactory(BookRepository(this))
         )[MainViewModel::class.java]
 
+        imageButtonSearch.setOnClickListener { viewModel.onSearchClick(editTextSearch.text.toString()) }
+
         adapter = BooksAdapter(viewModel::onBookClicked)
         recyclerViewItems.adapter = adapter
         viewModel.model.observe(this, Observer(::updateUi))

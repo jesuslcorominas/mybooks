@@ -15,12 +15,10 @@ class MainViewModel(private val booksRepository: BookRepository) : ViewModel(),
     private val _model = MutableLiveData<UiModel>()
     val model: LiveData<UiModel>
         get() {
-            if (_model.value == null) refresh("ring")
+            if (_model.value == null) clear()
             return _model
         }
 
-    // TODO crear un tipo para realizar la busqueda. Ahora mismo se esta
-    //  hardcodeando el termindo de busqueda
     sealed class UiModel {
         object Loading : UiModel()
         class Content(val books: List<BookItem>) : UiModel()
@@ -31,15 +29,23 @@ class MainViewModel(private val booksRepository: BookRepository) : ViewModel(),
         initScope()
     }
 
-    private fun refresh(query: String) {
-        launch {
-            _model.value = UiModel.Loading
-            _model.value = UiModel.Content(booksRepository.listBooks(query).items)
-        }
+    private fun clear() {
+        UiModel.Content(ArrayList())
     }
 
     fun onBookClicked(book: BookItem) {
         _model.value = UiModel.Navigation(book)
+    }
+
+    fun onSearchClick(query: String) {
+        if (query.length == 0) {
+            return;
+        }
+
+        launch {
+            _model.value = UiModel.Loading
+            _model.value = UiModel.Content(booksRepository.listBooks(query).items)
+        }
     }
 
     override fun onCleared() {
