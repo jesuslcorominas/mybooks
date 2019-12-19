@@ -37,7 +37,7 @@ class MainViewModel(private val booksRepository: BookRepository) : ViewModel(),
         _model.value = UiModel.Navigation(book)
     }
 
-    fun onSearchClick(query: String) {
+    fun onSearch(query: String) {
         if (query.length == 0) {
             return;
         }
