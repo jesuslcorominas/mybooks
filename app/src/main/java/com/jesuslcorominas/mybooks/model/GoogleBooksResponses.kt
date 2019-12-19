@@ -10,13 +10,13 @@ data class ListBooksDto(
 )
 
 @Parcelize
-data class BookItem(val id: String, val volumeInfo: VolumeInfo) : Parcelable
+data class BookItem(val id: String, val volumeInfo: VolumeInfo?) : Parcelable
 
 @Parcelize
 data class VolumeInfo(
     val title: String,
     val authors: List<String>,
-    val imageLinks: ImageLinks,
+    val imageLinks: ImageLinks?,
     val description: String,
     val publisher: String,
     val publisherDate: String,

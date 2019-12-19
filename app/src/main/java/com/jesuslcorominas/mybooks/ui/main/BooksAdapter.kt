@@ -33,8 +33,13 @@ class BooksAdapter(private val listener: (BookItem) -> Unit) :
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(book: BookItem) {
-            itemView.textViewTitle.text = book.volumeInfo.title
-            itemView.imageViewCoverPage.loadUrl(book.volumeInfo.imageLinks.thumbnail)
+            itemView.textViewTitle.text = book.volumeInfo?.title
+
+            if (book.volumeInfo?.imageLinks?.thumbnail != null) {
+                itemView.imageViewCoverPage.loadUrl(book.volumeInfo.imageLinks.thumbnail)
+            } else {
+                itemView.imageViewCoverPage.setImageResource(R.drawable.ic_question)
+            }
         }
     }
 }
