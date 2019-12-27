@@ -26,4 +26,6 @@ class BookRepository(activity: Activity) {
                 maxResults
             )
             .await()
+
+    suspend fun detailBook(id: String) = GoogleBooks.service.detail(id).await()
 }

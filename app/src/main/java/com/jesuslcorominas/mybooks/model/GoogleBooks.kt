@@ -7,6 +7,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 object GoogleBooks {
@@ -36,4 +37,7 @@ interface GoogleBooksService {
         @Query("maxResults") maxResults: Int
 
     ): Deferred<ListBooksDto>
+
+    @GET("volumes/{id}")
+    fun detail(@Path("id") id: String): Deferred<BookItem>
 }

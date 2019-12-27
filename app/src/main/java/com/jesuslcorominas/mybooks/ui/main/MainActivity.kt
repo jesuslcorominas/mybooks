@@ -7,11 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.antonioleiva.mymovies.ui.main.MainViewModel
+import com.antonioleiva.mymovies.ui.main.MainViewModel.UiModel
 import com.antonioleiva.mymovies.ui.main.MainViewModelFactory
 import com.jesuslcorominas.mybooks.R
 import com.jesuslcorominas.mybooks.model.BookItem
 import com.jesuslcorominas.mybooks.model.BookRepository
 import com.jesuslcorominas.mybooks.ui.common.hideKeyboard
+import com.jesuslcorominas.mybooks.ui.common.startActivity
+import com.jesuslcorominas.mybooks.ui.detail.DetailActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -43,13 +46,15 @@ class MainActivity : AppCompatActivity() {
         viewModel.model.observe(this, Observer(::updateUi))
     }
 
-    private fun updateUi(model: MainViewModel.UiModel) {
+    private fun updateUi(model: UiModel) {
         progress.visibility =
-            if (model is MainViewModel.UiModel.Loading) View.VISIBLE else View.GONE
+            if (model is UiModel.Loading) View.VISIBLE else View.GONE
 
         when (model) {
-            is MainViewModel.UiModel.Content -> updateBooks(model.books)
-            is MainViewModel.UiModel.Navigation -> TODO("Implementar navegacion a detalle")
+            is UiModel.Content -> updateBooks(model.books)
+            is UiModel.Navigation -> startActivity<DetailActivity> {
+                putExtra(DetailActivity.BOOK_ID, model.book.id)
+            }
         }
     }
 
