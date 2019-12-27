@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground"
+    android:padding="@dimen/margin_small">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageViewCoverPage"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height"
+        android:scaleType="centerCrop"
+        tools:src="@tools:sample/backgrounds/scenic" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/black_translucent"
+        android:ellipsize="end"
+        android:lines="2"
+        android:maxLines="2"
+        android:minLines="2"
+        android:padding="@dimen/margin"
+        android:textColor="@color/white"
+        tools:text="El señor de los anillos" />
+
+
+</FrameLayout>
