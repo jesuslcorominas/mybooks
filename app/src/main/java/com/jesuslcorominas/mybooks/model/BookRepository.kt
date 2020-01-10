@@ -2,6 +2,8 @@ package com.jesuslcorominas.mybooks.model
 
 import android.app.Activity
 import com.antonioleiva.mymovies.model.RegionRepository
+import retrofit2.HttpException
+import timber.log.Timber
 
 class BookRepository(activity: Activity) {
 
@@ -17,15 +19,31 @@ class BookRepository(activity: Activity) {
     private val regionRepository = RegionRepository(activity)
 
     suspend fun listBooks(query: String) =
-        GoogleBooks.service
-            .listBooks(
-                query,
-                regionRepository.findLastRegion(),
-                printType,
-                projection,
-                maxResults
-            )
-            .await()
+        try {
+            GoogleBooks.service
+                .listBooks(
+                    query,
+                    regionRepository.findLastRegion(),
+                    printType,
+                    projection,
+                    maxResults
+                )
+        } catch (e: HttpException) {
+            Timber.e(e, "Error HTTP al hacer la peticion %s", e.message)
+            ListBooksDto()
+        } catch (e: Exception) {
+            Timber.e(e, "Error al hacer la peticion %s", e.message)
+            ListBooksDto()
+        }
 
-    suspend fun detailBook(id: String) = GoogleBooks.service.detail(id).await()
+    suspend fun detailBook(id: String) =
+        try {
+            GoogleBooks.service.detail(id)
+        } catch (e: HttpException) {
+            Timber.e(e, "Error HTTP al hacer la peticion %s", e.message)
+            BookItem()
+        } catch (e: Exception) {
+            Timber.e(e, "Error al hacer la peticion %s", e.message)
+            BookItem()
+        }
 }

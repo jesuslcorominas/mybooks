@@ -4,13 +4,13 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 data class ListBooksDto(
-    val kind: String,
-    val totalItems: Int,
-    val items: List<BookItem>
+    val kind: String = "",
+    val totalItems: Int = -1,
+    val items: List<BookItem> = ArrayList()
 )
 
 @Parcelize
-data class BookItem(val id: String, val volumeInfo: VolumeInfo?) : Parcelable
+data class BookItem(val id: String = "", val volumeInfo: VolumeInfo? = null) : Parcelable
 
 @Parcelize
 data class VolumeInfo(

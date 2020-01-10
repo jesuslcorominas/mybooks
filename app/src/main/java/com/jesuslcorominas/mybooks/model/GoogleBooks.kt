@@ -1,7 +1,6 @@
 package com.jesuslcorominas.mybooks.model
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -29,15 +28,15 @@ object GoogleBooks {
 
 interface GoogleBooksService {
     @GET("volumes")
-    fun listBooks(
+    suspend fun listBooks(
         @Query("q") query: String,
         @Query("langRestrict") langRestrict: String,
         @Query("printType") printType: String,
         @Query("projection") projection: String,
         @Query("maxResults") maxResults: Int
 
-    ): Deferred<ListBooksDto>
+    ): ListBooksDto
 
     @GET("volumes/{id}")
-    fun detail(@Path("id") id: String): Deferred<BookItem>
+    suspend fun detail(@Path("id") id: String): BookItem
 }
