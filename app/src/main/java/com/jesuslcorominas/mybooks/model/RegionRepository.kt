@@ -4,6 +4,7 @@ import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.app.Activity
 import android.location.Geocoder
 import android.location.Location
+import java.io.IOException
 
 class RegionRepository(activity: Activity) {
 
@@ -24,7 +25,12 @@ class RegionRepository(activity: Activity) {
 
     private fun Location?.toRegion(): String {
         val addresses = this?.let {
-            geocoder.getFromLocation(latitude, longitude, 1)
+            try {
+                geocoder.getFromLocation(latitude, longitude, 1)
+            } catch (e: IOException) {
+                null
+            }
+
         }
         return addresses?.firstOrNull()?.countryCode ?: DEFAULT_REGION
     }
