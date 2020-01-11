@@ -1,4 +1,4 @@
-package com.antonioleiva.mymovies.model
+package com.jesuslcorominas.mybooks.model
 
 import android.app.Activity
 import com.karumi.dexter.Dexter

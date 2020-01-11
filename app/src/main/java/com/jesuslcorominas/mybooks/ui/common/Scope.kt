@@ -1,4 +1,4 @@
-package com.antonioleiva.mymovies.ui.common
+package com.jesuslcorominas.mybooks.ui.common
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

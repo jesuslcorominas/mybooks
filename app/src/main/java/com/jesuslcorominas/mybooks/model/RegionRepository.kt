@@ -1,9 +1,10 @@
-package com.antonioleiva.mymovies.model
+package com.jesuslcorominas.mybooks.model
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.app.Activity
 import android.location.Geocoder
 import android.location.Location
+
 import java.io.IOException
 
 class RegionRepository(activity: Activity) {

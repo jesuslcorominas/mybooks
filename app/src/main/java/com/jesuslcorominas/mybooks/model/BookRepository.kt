@@ -1,7 +1,6 @@
 package com.jesuslcorominas.mybooks.model
 
 import android.app.Activity
-import com.antonioleiva.mymovies.model.RegionRepository
 import retrofit2.HttpException
 import timber.log.Timber
 
