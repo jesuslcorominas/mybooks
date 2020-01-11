@@ -1,40 +1,44 @@
-package com.antonioleiva.mymovies.ui.main
+package com.jesuslcorominas.mybooks.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.antonioleiva.mymovies.ui.common.Scope
 import com.jesuslcorominas.mybooks.model.BookItem
 import com.jesuslcorominas.mybooks.model.BookRepository
+import com.jesuslcorominas.mybooks.ui.common.Event
+import com.jesuslcorominas.mybooks.ui.common.ScopedViewModel
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val booksRepository: BookRepository) : ViewModel(),
-    Scope by Scope.Impl() {
+class MainViewModel(private val booksRepository: BookRepository) : ScopedViewModel() {
 
-    private val _model = MutableLiveData<UiModel>()
-    val model: LiveData<UiModel>
-        get() {
-            if (_model.value == null) clear()
-            return _model
-        }
+    private val _books = MutableLiveData<List<BookItem>>()
+    val books: LiveData<List<BookItem>> get() = _books
 
-    sealed class UiModel {
-        object Loading : UiModel()
-        class Content(val books: List<BookItem>) : UiModel()
-        class Navigation(val book: BookItem) : UiModel()
-    }
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> get() = _loading
+
+    private val _navigateToDetail = MutableLiveData<Event<String>>()
+    val navigateToDetail: LiveData<Event<String>> get() = _navigateToDetail
+
+    private val _requestLocationPermission = MutableLiveData<Event<Unit>>()
+    val requestLocationPermission: LiveData<Event<Unit>> get() = _requestLocationPermission
 
     init {
         initScope()
+        refresh()
+    }
+
+    private fun refresh() {
+        _requestLocationPermission.value = Event(Unit)
     }
 
     private fun clear() {
-        UiModel.Content(ArrayList())
+        _books.value = ArrayList()
     }
 
     fun onBookClicked(book: BookItem) {
-        _model.value = UiModel.Navigation(book)
+        _navigateToDetail.value = Event(book.id)
     }
 
     fun onSearch(query: String) {
@@ -43,8 +47,9 @@ class MainViewModel(private val booksRepository: BookRepository) : ViewModel(),
         }
 
         launch {
-            _model.value = UiModel.Loading
-            _model.value = UiModel.Content(booksRepository.listBooks(query).items)
+            _loading.value = true
+            _books.value = booksRepository.listBooks(query).items
+            _loading.value = false
         }
     }
 
