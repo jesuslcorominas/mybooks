@@ -74,6 +74,6 @@
             android:layout_marginEnd="@dimen/margin"
             android:layout_marginBottom="@dimen/margin"
             android:visibility="gone"
-            app:loading="@{viewmodel.loading}" />
+            app:visible="@{viewmodel.loading}" />
     </FrameLayout>
 </layout>

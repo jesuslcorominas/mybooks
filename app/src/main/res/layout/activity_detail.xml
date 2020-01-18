@@ -94,7 +94,7 @@
             android:layout_marginTop="@dimen/margin"
             android:layout_marginEnd="@dimen/margin"
             android:layout_marginBottom="@dimen/margin"
-            app:loading="@{viewmodel.loading}"
+            app:visible="@{viewmodel.loading}"
             tools:visibility="visible" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

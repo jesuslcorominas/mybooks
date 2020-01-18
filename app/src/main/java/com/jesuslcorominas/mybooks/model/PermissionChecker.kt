@@ -1,6 +1,8 @@
 package com.jesuslcorominas.mybooks.model
 
 import android.app.Activity
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
@@ -26,4 +28,9 @@ class PermissionChecker(private val activity: Activity, private val permission: 
                 }
                 ).check()
         }
+
+    fun check(): Boolean = ContextCompat.checkSelfPermission(
+        activity,
+        permission
+    ) == PackageManager.PERMISSION_GRANTED
 }

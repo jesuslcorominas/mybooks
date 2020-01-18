@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
@@ -18,6 +20,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlin.properties.Delegates
+
+fun <T : ViewDataBinding> ViewGroup.bindingInflate(
+    @LayoutRes layoutRes: Int,
+    attachToRoot: Boolean = true
+): T =
+    DataBindingUtil.inflate(LayoutInflater.from(context), layoutRes, this, attachToRoot)
 
 inline fun <reified T : Activity> Context.intentFor(body: Intent.() -> Unit): Intent =
     Intent(this, T::class.java).apply(body)
