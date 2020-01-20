@@ -17,6 +17,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    // TODO habria que hacer una vista de "sin libros almacenados"
+    //  y con un livedata que se mostrase u ocultase. Tambien una vista de error
+
+    // TODO dar opción de volver a mostrar los libros almacenados, un botón
+    //  limpiar o algo así
+
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: BooksAdapter
 
@@ -50,7 +56,9 @@ class MainActivity : AppCompatActivity() {
         })
 
         viewModel.requestLocationPermission.observe(this, EventObserver {
-            coarsePermissionRequester.request {}
+            coarsePermissionRequester.request {
+                viewModel.onCoarsePermissionRequested()
+            }
         })
 
         viewModel.hideKeyboard.observe(this, Observer { hideKeyboard() })

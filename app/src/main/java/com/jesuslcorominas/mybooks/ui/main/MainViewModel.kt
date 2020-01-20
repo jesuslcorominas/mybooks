@@ -41,6 +41,14 @@ class MainViewModel(private val booksRepository: BookRepository) : ScopedViewMod
         _books.value = ArrayList()
     }
 
+    fun onCoarsePermissionRequested() {
+        launch {
+            _loading.value = true
+            _books.value = booksRepository.getAll()
+            _loading.value = false
+        }
+    }
+
     fun onBookClicked(book: Book) {
         _navigateToDetail.value = Event(book.googleId)
     }
@@ -55,7 +63,7 @@ class MainViewModel(private val booksRepository: BookRepository) : ScopedViewMod
         launch {
             _loading.value = true
             _books.value =
-                booksRepository.listBooks(query).items.map { it.toBook() }
+                booksRepository.findBooks(query).items.map { it.toBook() }
             _loading.value = false
         }
     }

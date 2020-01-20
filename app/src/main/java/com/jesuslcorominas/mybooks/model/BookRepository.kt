@@ -23,7 +23,9 @@ class BookRepository(application: BooksApplication) {
     private val regionRepository =
         RegionRepository(application)
 
-    suspend fun listBooks(query: String) =
+    suspend fun getAll() = db.bookDao().getAll()
+
+    suspend fun findBooks(query: String) =
         try {
             GoogleBooksRemoteDatasource.service
                 .listBooks(
