@@ -6,6 +6,7 @@ import android.view.KeyEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import com.jesuslcorominas.mybooks.R
 import com.jesuslcorominas.mybooks.databinding.ActivityMainBinding
 import com.jesuslcorominas.mybooks.model.BookRepository
@@ -49,14 +50,13 @@ class MainActivity : AppCompatActivity() {
         })
 
         viewModel.requestLocationPermission.observe(this, EventObserver {
-            coarsePermissionRequester.request {
-
-            }
+            coarsePermissionRequester.request {}
         })
+
+        viewModel.hideKeyboard.observe(this, Observer { hideKeyboard() })
     }
 
     private fun onSearch() {
         viewModel.onSearch(editTextSearch.text.toString())
-        hideKeyboard()
     }
 }

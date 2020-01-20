@@ -25,6 +25,9 @@ class MainViewModel(private val booksRepository: BookRepository) : ScopedViewMod
     private val _requestLocationPermission = MutableLiveData<Event<Unit>>()
     val requestLocationPermission: LiveData<Event<Unit>> get() = _requestLocationPermission
 
+    private val _hideKeyboard = MutableLiveData<Unit>()
+    val hideKeyboard: LiveData<Unit> = _hideKeyboard
+
     init {
         initScope()
         refresh()
@@ -43,6 +46,8 @@ class MainViewModel(private val booksRepository: BookRepository) : ScopedViewMod
     }
 
     fun onSearch(query: String) {
+        _hideKeyboard.value = Unit
+
         if (query.length == 0) {
             return;
         }
