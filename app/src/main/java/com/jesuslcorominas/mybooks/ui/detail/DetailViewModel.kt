@@ -27,9 +27,19 @@ class DetailViewModel(private val booksRepository: BookRepository) : ScopedViewM
     private val _description = MutableLiveData<String>()
     val description: LiveData<String> get() = _description
 
+    private val _favourite = MutableLiveData<Boolean>()
+    val favourite: LiveData<Boolean> get() = _favourite
+
+    private val _collected = MutableLiveData<Boolean>()
+    val collected: LiveData<Boolean> get() = _collected
+
+    private val _read = MutableLiveData<Boolean>()
+    val read: LiveData<Boolean> get() = _read
+
     private val _infoLink = MutableLiveData<String>()
     val infoLink: LiveData<String> get() = _infoLink
-        
+
+
     init {
         initScope()
     }
@@ -49,7 +59,40 @@ class DetailViewModel(private val booksRepository: BookRepository) : ScopedViewM
             _description.value = this.description
             _infoLink.value = this.infoLink
             _thumbnail.value = this.thumbnail
+            _favourite.value = this.favourite
+            _collected.value = this.collected
+            _read.value = this.read
         }
+    }
+
+    fun onFavouriteClicked() {
+        launch {
+            book.value?.let {
+                persistAndUpdateUI(it.copy(favourite = !it.favourite))
+            }
+        }
+    }
+
+    fun onCollectedClicked() {
+        launch {
+            book.value?.let {
+                persistAndUpdateUI(it.copy(collected = !it.collected))
+            }
+        }
+    }
+
+    fun onReadClicked() {
+        launch {
+            book.value?.let {
+                persistAndUpdateUI(it.copy(read = !it.read))
+            }
+        }
+    }
+
+    private suspend fun persistAndUpdateUI(updatedBook: Book) {
+        _book.value = updatedBook
+        updateUI()
+        booksRepository.persistBook(updatedBook)
     }
 
     override fun onCleared() {

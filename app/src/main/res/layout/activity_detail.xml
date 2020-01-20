@@ -98,9 +98,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:onClick="@{() -> viewmodel.onFavoriteClicked()}"
-                android:src="@drawable/ic_favorite_off"
-                app:favorite="@{viewmodel.favorite}" />
+                android:onClick="@{() -> viewmodel.onFavouriteClicked()}"
+                android:src="@drawable/ic_favourite_off"
+                app:favourite="@{viewmodel.favourite}"
+                app:layout_anchor="@id/appBarLayout"
+                app:layout_anchorGravity="bottom|end" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabCollected"
@@ -109,7 +111,8 @@
                 android:layout_margin="16dp"
                 android:onClick="@{() -> viewmodel.onCollectedClicked()}"
                 android:src="@drawable/ic_collected_off"
-                app:favorite="@{viewmodel.collected}"
+                app:collected="@{viewmodel.collected}"
+                app:layout_anchor="@id/appBarLayout"
                 app:layout_anchorGravity="bottom|end" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -119,7 +122,9 @@
                 android:layout_margin="16dp"
                 android:onClick="@{() -> viewmodel.onReadClicked()}"
                 android:src="@drawable/ic_read_off"
-                app:favorite="@{viewmodel.favorite}" />
+                app:layout_anchor="@id/appBarLayout"
+                app:layout_anchorGravity="bottom|end"
+                app:read="@{viewmodel.read}" />
         </LinearLayout>
 
         <ProgressBar

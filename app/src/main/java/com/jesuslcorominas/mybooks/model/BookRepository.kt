@@ -56,6 +56,14 @@ class BookRepository(application: BooksApplication) {
             Timber.e(e, "Error al hacer la peticion %s", e.message)
             TODO("controlar error genérico")
         }
+
+    suspend fun persistBook(book: Book) {
+        if (book.id == 0) {
+            db.bookDao().insertBook(book)
+        } else {
+            db.bookDao().updateBook(book)
+        }
+    }
 }
 
 fun BookItem.toBook(): Book {
