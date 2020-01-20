@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.jesuslcorominas.mybooks.model.BookItem
 import com.jesuslcorominas.mybooks.model.BookRepository
+import com.jesuslcorominas.mybooks.model.database.Book
 import com.jesuslcorominas.mybooks.ui.common.ScopedViewModel
 import kotlinx.coroutines.launch
 
@@ -15,8 +15,8 @@ class DetailViewModel(private val booksRepository: BookRepository) : ScopedViewM
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> get() = _loading
 
-    private val _book = MutableLiveData<BookItem>()
-    val book: LiveData<BookItem> get() = _book
+    private val _book = MutableLiveData<Book>()
+    val book: LiveData<Book> get() = _book
 
     private val _title = MutableLiveData<String>()
     val title: LiveData<String> get() = _title
@@ -29,15 +29,15 @@ class DetailViewModel(private val booksRepository: BookRepository) : ScopedViewM
 
     private val _infoLink = MutableLiveData<String>()
     val infoLink: LiveData<String> get() = _infoLink
-
+        
     init {
         initScope()
     }
 
-    fun onCreated(id: String) {
+    fun onCreated(googleId: String) {
         launch {
             _loading.value = true
-            _book.value = booksRepository.detailBook(id)
+            _book.value = booksRepository.detailBook(googleId)
             updateUI()
             _loading.value = false
         }
@@ -45,10 +45,10 @@ class DetailViewModel(private val booksRepository: BookRepository) : ScopedViewM
 
     private fun updateUI() {
         _book.value?.run {
-            _title.value = volumeInfo?.title
-            _description.value = volumeInfo?.description
-            _infoLink.value = volumeInfo?.infoLink
-            _thumbnail.value = volumeInfo?.imageLinks?.thumbnail
+            _title.value = this.title
+            _description.value = this.description
+            _infoLink.value = this.infoLink
+            _thumbnail.value = this.thumbnail
         }
     }
 

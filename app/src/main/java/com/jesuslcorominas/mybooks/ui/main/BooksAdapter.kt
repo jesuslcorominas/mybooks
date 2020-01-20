@@ -4,14 +4,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jesuslcorominas.mybooks.R
 import com.jesuslcorominas.mybooks.databinding.ItemBookBinding
-import com.jesuslcorominas.mybooks.model.BookItem
+import com.jesuslcorominas.mybooks.model.database.Book
 import com.jesuslcorominas.mybooks.ui.common.basicDiffUtil
 import com.jesuslcorominas.mybooks.ui.common.bindingInflate
 
-class BooksAdapter(private val listener: (BookItem) -> Unit) :
+class BooksAdapter(private val listener: (Book) -> Unit) :
     RecyclerView.Adapter<BooksAdapter.ViewHolder>() {
 
-    var items: List<BookItem> by basicDiffUtil(
+    var items: List<Book> by basicDiffUtil(
         emptyList(),
         areItemsTheSame = { old, new -> old.id == new.id }
     )

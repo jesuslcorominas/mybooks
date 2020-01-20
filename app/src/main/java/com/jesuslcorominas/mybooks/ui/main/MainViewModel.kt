@@ -4,16 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.jesuslcorominas.mybooks.model.BookItem
 import com.jesuslcorominas.mybooks.model.BookRepository
+import com.jesuslcorominas.mybooks.model.database.Book
+import com.jesuslcorominas.mybooks.model.toBook
 import com.jesuslcorominas.mybooks.ui.common.Event
 import com.jesuslcorominas.mybooks.ui.common.ScopedViewModel
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val booksRepository: BookRepository) : ScopedViewModel() {
 
-    private val _books = MutableLiveData<List<BookItem>>()
-    val books: LiveData<List<BookItem>> get() = _books
+    private val _books = MutableLiveData<List<Book>>()
+    val books: LiveData<List<Book>> get() = _books
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> get() = _loading
@@ -37,8 +38,8 @@ class MainViewModel(private val booksRepository: BookRepository) : ScopedViewMod
         _books.value = ArrayList()
     }
 
-    fun onBookClicked(book: BookItem) {
-        _navigateToDetail.value = Event(book.id)
+    fun onBookClicked(book: Book) {
+        _navigateToDetail.value = Event(book.googleId)
     }
 
     fun onSearch(query: String) {
@@ -48,7 +49,8 @@ class MainViewModel(private val booksRepository: BookRepository) : ScopedViewMod
 
         launch {
             _loading.value = true
-            _books.value = booksRepository.listBooks(query).items
+            _books.value =
+                booksRepository.listBooks(query).items.map { it.toBook() }
             _loading.value = false
         }
     }
