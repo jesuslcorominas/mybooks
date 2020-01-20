@@ -59,13 +59,9 @@ class BookRepository(application: BooksApplication) {
             TODO("controlar error genérico")
         }
 
-    suspend fun persistBook(book: Book) {
-        if (book.id == 0) {
-            db.bookDao().insertBook(book)
-        } else {
-            db.bookDao().updateBook(book)
-        }
-    }
+    suspend fun persistBook(book: Book) =
+        if (book.id == 0) db.bookDao().insertBook(book) else db.bookDao().updateBook(book)
+    
 }
 
 fun BookItem.toBook(): Book {
