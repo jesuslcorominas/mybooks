@@ -7,7 +7,7 @@
 
         <variable
             name="book"
-            type="com.jesuslcorominas.mybooks.model.BookItem" />
+            type="com.jesuslcorominas.mybooks.model.database.Book" />
     </data>
 
     <FrameLayout
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/item_height"
             android:scaleType="centerCrop"
-            app:thumbnail="@{book.volumeInfo.imageLinks.thumbnail}"
+            app:thumbnail="@{book.thumbnail}"
             tools:src="@tools:sample/backgrounds/scenic" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -35,7 +35,7 @@
             android:maxLines="2"
             android:minLines="2"
             android:padding="@dimen/margin"
-            android:text="@{book.volumeInfo.title}"
+            android:text="@{book.title}"
             android:textColor="@color/white"
             tools:text="El señor de los anillos" />
 

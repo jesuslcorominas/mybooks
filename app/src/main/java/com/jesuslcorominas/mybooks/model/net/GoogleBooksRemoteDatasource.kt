@@ -1,4 +1,4 @@
-package com.jesuslcorominas.mybooks.model
+package com.jesuslcorominas.mybooks.model.net
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
@@ -9,7 +9,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-object GoogleBooks {
+object GoogleBooksRemoteDatasource {
     private val okHttpClient = HttpLoggingInterceptor().run {
         level = HttpLoggingInterceptor.Level.BODY
         OkHttpClient.Builder().addInterceptor(this).build()
@@ -22,7 +22,8 @@ object GoogleBooks {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .run {
-            create<GoogleBooksService>(GoogleBooksService::class.java)
+            create<GoogleBooksService>(
+                GoogleBooksService::class.java)
         }
 }
 

@@ -1,27 +1,25 @@
-package com.jesuslcorominas.mybooks.model
+package com.jesuslcorominas.mybooks.model.framework
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
-import android.app.Activity
+import android.app.Application
 import android.location.Geocoder
 import android.location.Location
-
 import java.io.IOException
 
-class RegionRepository(activity: Activity) {
+class RegionRepository(application: Application) {
 
     companion object {
-        private const val DEFAULT_REGION = "US"
+        private const val DEFAULT_REGION = "ES"
     }
 
-    private val locationDataSource = PlayServicesLocationDataSource(activity)
-    private val coarsePermissionChecker = PermissionChecker(activity, ACCESS_COARSE_LOCATION)
-    private val geocoder = Geocoder(activity)
+    private val locationDataSource = PlayServicesLocationDataSource(application)
+    private val coarsePermissionChecker = PermissionChecker(application, ACCESS_COARSE_LOCATION)
+    private val geocoder = Geocoder(application)
 
     suspend fun findLastRegion(): String = findLastLocation().toRegion()
 
     private suspend fun findLastLocation(): Location? {
-        val success = coarsePermissionChecker.request()
-        return if (success) locationDataSource.findLastLocation() else null
+        return if (coarsePermissionChecker.check()) locationDataSource.findLastLocation() else null
     }
 
     private fun Location?.toRegion(): String {
