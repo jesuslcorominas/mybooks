@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 
 
 class DetailViewModel(
+    private val googleId: String,
     private val toggleCollectedBook: ToggleCollectedBook,
     private val toggleFavouriteBook: ToggleFavouriteBook,
     private val toggleReadBook: ToggleReadBook,
@@ -48,9 +49,11 @@ class DetailViewModel(
 
     init {
         initScope()
+
+        getDetail()
     }
 
-    fun onCreated(googleId: String) {
+    fun getDetail() {
         launch {
             _loading.value = true
             _book.value = getBookDetail.invoke(googleId)
