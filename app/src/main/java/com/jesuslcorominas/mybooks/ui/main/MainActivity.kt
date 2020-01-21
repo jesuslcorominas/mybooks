@@ -22,6 +22,8 @@ import com.jesuslcorominas.mybooks.ui.detail.DetailActivity
 import com.jesuslcorominas.mybooks.usecases.FindBooks
 import com.jesuslcorominas.mybooks.usecases.GetStoredBooks
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.scope.currentScope
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,30 +33,13 @@ class MainActivity : AppCompatActivity() {
     // TODO dar opción de volver a mostrar los libros almacenados, un botón
     //  limpiar o algo así
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by currentScope.viewModel(this)
     private lateinit var adapter: BooksAdapter
 
     private val coarsePermissionRequester = PermissionRequester(this, ACCESS_COARSE_LOCATION)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val googleBooks = GoogleBooks()
-        val remoteDatasource = GoogleBooksDatasource(googleBooks)
-
-        val localDatasource = RoomBooksDatasource(app.db)
-
-        val booksRepository = BooksRepository(localDatasource, remoteDatasource)
-
-        val locationDatasource = PlayServicesLocationDatasource(app)
-        val permissionChecker = AndroidPermissionChecker(app)
-
-        val regionRepository = RegionRepository(locationDatasource, permissionChecker)
-
-        val getStoredBooks = GetStoredBooks(booksRepository)
-        val findBooks = FindBooks(booksRepository, regionRepository)
-
-        viewModel = getViewModel { MainViewModel(getStoredBooks, findBooks) }
 
         val binding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
