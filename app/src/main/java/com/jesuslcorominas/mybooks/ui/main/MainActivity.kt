@@ -8,11 +8,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.jesuslcorominas.mybooks.R
+import com.jesuslcorominas.mybooks.data.repository.BooksRepository
+import com.jesuslcorominas.mybooks.data.repository.RegionRepository
 import com.jesuslcorominas.mybooks.databinding.ActivityMainBinding
-import com.jesuslcorominas.mybooks.model.BookRepository
-import com.jesuslcorominas.mybooks.model.framework.PermissionRequester
+import com.jesuslcorominas.mybooks.model.database.RoomBooksDatasource
+import com.jesuslcorominas.mybooks.model.location.AndroidPermissionChecker
+import com.jesuslcorominas.mybooks.model.location.PermissionRequester
+import com.jesuslcorominas.mybooks.model.location.PlayServicesLocationDatasource
+import com.jesuslcorominas.mybooks.model.server.GoogleBooks
+import com.jesuslcorominas.mybooks.model.server.GoogleBooksDatasource
 import com.jesuslcorominas.mybooks.ui.common.*
 import com.jesuslcorominas.mybooks.ui.detail.DetailActivity
+import com.jesuslcorominas.mybooks.usecases.FindBooks
+import com.jesuslcorominas.mybooks.usecases.GetStoredBooks
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -31,7 +39,22 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = getViewModel { MainViewModel(BookRepository(app)) }
+        val googleBooks = GoogleBooks()
+        val remoteDatasource = GoogleBooksDatasource(googleBooks)
+
+        val localDatasource = RoomBooksDatasource(app.db)
+
+        val booksRepository = BooksRepository(localDatasource, remoteDatasource)
+
+        val locationDatasource = PlayServicesLocationDatasource(app)
+        val permissionChecker = AndroidPermissionChecker(app)
+
+        val regionRepository = RegionRepository(locationDatasource, permissionChecker)
+
+        val getStoredBooks = GetStoredBooks(booksRepository)
+        val findBooks = FindBooks(booksRepository, regionRepository)
+
+        viewModel = getViewModel { MainViewModel(getStoredBooks, findBooks) }
 
         val binding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)

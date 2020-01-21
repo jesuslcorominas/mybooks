@@ -1,18 +1,13 @@
-package com.jesuslcorominas.mybooks.model.net
-
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+package com.jesuslcorominas.mybooks.model.server
 
 data class ListBooksDto(
     val kind: String = "",
     val totalItems: Int = -1,
-    val items: List<BookItem> = ArrayList()
+    val items: List<Book> = ArrayList()
 )
 
-@Parcelize
-data class BookItem(val id: String = "", val volumeInfo: VolumeInfo = VolumeInfo()) : Parcelable
+data class Book(val id: String = "", val volumeInfo: VolumeInfo = VolumeInfo())
 
-@Parcelize
 data class VolumeInfo(
     val title: String = "",
     val authors: List<String> = ArrayList(),
@@ -22,9 +17,7 @@ data class VolumeInfo(
     val publisherDate: String = "",
     val previewLink: String = "",
     val infoLink: String = ""
-) : Parcelable
+)
 
-@Parcelize
-data class ImageLinks(val thumbnail: String = "") : Parcelable
-
+data class ImageLinks(val thumbnail: String = "")
 

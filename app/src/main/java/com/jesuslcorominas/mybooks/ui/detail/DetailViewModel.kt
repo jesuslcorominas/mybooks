@@ -2,15 +2,21 @@ package com.jesuslcorominas.mybooks.ui.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.jesuslcorominas.mybooks.model.BookRepository
-import com.jesuslcorominas.mybooks.model.database.Book
+import com.jesuslcorominas.mybooks.domain.Book
 import com.jesuslcorominas.mybooks.ui.common.ScopedViewModel
+import com.jesuslcorominas.mybooks.usecases.GetBookDetail
+import com.jesuslcorominas.mybooks.usecases.ToggleCollectedBook
+import com.jesuslcorominas.mybooks.usecases.ToggleFavouriteBook
+import com.jesuslcorominas.mybooks.usecases.ToggleReadBook
 import kotlinx.coroutines.launch
 
 
-class DetailViewModel(private val booksRepository: BookRepository) : ScopedViewModel() {
+class DetailViewModel(
+    private val toggleCollectedBook: ToggleCollectedBook,
+    private val toggleFavouriteBook: ToggleFavouriteBook,
+    private val toggleReadBook: ToggleReadBook,
+    private val getBookDetail: GetBookDetail
+) : ScopedViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> get() = _loading
@@ -47,7 +53,7 @@ class DetailViewModel(private val booksRepository: BookRepository) : ScopedViewM
     fun onCreated(googleId: String) {
         launch {
             _loading.value = true
-            _book.value = booksRepository.detailBook(googleId)
+            _book.value = getBookDetail.invoke(googleId)
             updateUI()
             _loading.value = false
         }
@@ -68,7 +74,8 @@ class DetailViewModel(private val booksRepository: BookRepository) : ScopedViewM
     fun onFavouriteClicked() {
         launch {
             book.value?.let {
-                persistAndUpdateUI(it.copy(favourite = !it.favourite))
+                _book.value = toggleFavouriteBook.invoke(it)
+                updateUI()
             }
         }
     }
@@ -76,7 +83,8 @@ class DetailViewModel(private val booksRepository: BookRepository) : ScopedViewM
     fun onCollectedClicked() {
         launch {
             book.value?.let {
-                persistAndUpdateUI(it.copy(collected = !it.collected))
+                _book.value = toggleCollectedBook.invoke(it)
+                updateUI()
             }
         }
     }
@@ -84,26 +92,14 @@ class DetailViewModel(private val booksRepository: BookRepository) : ScopedViewM
     fun onReadClicked() {
         launch {
             book.value?.let {
-                persistAndUpdateUI(it.copy(read = !it.read))
+                _book.value = toggleReadBook.invoke(it)
+                updateUI()
             }
         }
-    }
-
-    private suspend fun persistAndUpdateUI(updatedBook: Book) {
-        _book.value = updatedBook
-        updateUI()
-        booksRepository.persistBook(updatedBook)
     }
 
     override fun onCleared() {
         destroyScope()
         super.onCleared()
     }
-}
-
-@Suppress("UNCHECKED_CAST")
-class DetailViewModelFactory(private val booksRepository: BookRepository) :
-    ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-        DetailViewModel(booksRepository) as T
 }

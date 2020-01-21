@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jesuslcorominas.mybooks.R
 import com.jesuslcorominas.mybooks.databinding.ItemBookBinding
-import com.jesuslcorominas.mybooks.model.database.Book
+import com.jesuslcorominas.mybooks.domain.Book
 import com.jesuslcorominas.mybooks.ui.common.basicDiffUtil
 import com.jesuslcorominas.mybooks.ui.common.bindingInflate
 

@@ -1,4 +1,4 @@
-package com.jesuslcorominas.mybooks.model.framework
+package com.jesuslcorominas.mybooks.model.location
 
 import android.app.Activity
 import com.karumi.dexter.Dexter
