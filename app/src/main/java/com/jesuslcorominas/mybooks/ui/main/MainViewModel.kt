@@ -2,16 +2,17 @@ package com.jesuslcorominas.mybooks.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.jesuslcorominas.mybooks.model.BookRepository
-import com.jesuslcorominas.mybooks.model.database.Book
-import com.jesuslcorominas.mybooks.model.toBook
+import com.jesuslcorominas.mybooks.domain.Book
 import com.jesuslcorominas.mybooks.ui.common.Event
 import com.jesuslcorominas.mybooks.ui.common.ScopedViewModel
+import com.jesuslcorominas.mybooks.usecases.FindBooks
+import com.jesuslcorominas.mybooks.usecases.GetStoredBooks
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val booksRepository: BookRepository) : ScopedViewModel() {
+class MainViewModel(
+    private val getStoredBooks: GetStoredBooks,
+    private val findBooks: FindBooks
+) : ScopedViewModel() {
 
     private val _books = MutableLiveData<List<Book>>()
     val books: LiveData<List<Book>> get() = _books
@@ -44,7 +45,7 @@ class MainViewModel(private val booksRepository: BookRepository) : ScopedViewMod
     fun onCoarsePermissionRequested() {
         launch {
             _loading.value = true
-            _books.value = booksRepository.getAll()
+            _books.value = getStoredBooks.invoke()
             _loading.value = false
         }
     }
@@ -62,8 +63,7 @@ class MainViewModel(private val booksRepository: BookRepository) : ScopedViewMod
 
         launch {
             _loading.value = true
-            _books.value =
-                booksRepository.findBooks(query).items.map { it.toBook() }
+            _books.value = findBooks.invoke(query)
             _loading.value = false
         }
     }
@@ -72,11 +72,4 @@ class MainViewModel(private val booksRepository: BookRepository) : ScopedViewMod
         destroyScope()
         super.onCleared()
     }
-}
-
-@Suppress("UNCHECKED_CAST")
-class MainViewModelFactory(private val booksRepository: BookRepository) :
-    ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-        MainViewModel(booksRepository) as T
 }

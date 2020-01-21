@@ -1,7 +1,5 @@
-package com.jesuslcorominas.mybooks.data.source.server
+package com.jesuslcorominas.mybooks.model.server
 
-import com.jesuslcorominas.mybooks.data.source.server.model.Book
-import com.jesuslcorominas.mybooks.data.source.server.model.ListBooksDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

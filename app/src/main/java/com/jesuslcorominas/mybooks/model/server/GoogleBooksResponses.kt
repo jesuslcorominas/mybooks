@@ -1,4 +1,4 @@
-package com.jesuslcorominas.mybooks.data.source.server.model
+package com.jesuslcorominas.mybooks.model.server
 
 data class ListBooksDto(
     val kind: String = "",
@@ -20,3 +20,4 @@ data class VolumeInfo(
 )
 
 data class ImageLinks(val thumbnail: String = "")
+

@@ -1,4 +1,4 @@
-package com.jesuslcorominas.mybooks.model.framework
+package com.jesuslcorominas.mybooks.model.location
 
 import android.Manifest
 import android.app.Application

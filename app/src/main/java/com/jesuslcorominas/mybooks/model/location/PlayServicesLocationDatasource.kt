@@ -1,4 +1,4 @@
-package com.jesuslcorominas.mybooks.model.framework
+package com.jesuslcorominas.mybooks.model.location
 
 import android.annotation.SuppressLint
 import android.app.Application
