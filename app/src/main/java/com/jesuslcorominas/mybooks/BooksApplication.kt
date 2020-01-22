@@ -1,6 +1,7 @@
 package com.jesuslcorominas.mybooks
 
 import android.app.Application
+import com.facebook.stetho.Stetho
 
 class BooksApplication : Application() {
 
@@ -8,5 +9,7 @@ class BooksApplication : Application() {
         super.onCreate()
 
         initDI()
+
+        Stetho.initializeWithDefaults(this)
     }
 }
