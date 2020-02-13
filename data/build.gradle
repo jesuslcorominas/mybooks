@@ -6,5 +6,6 @@ dependencies {
     implementation project(":domain")
 
     implementation kotlinLibs.values()
+    testImplementation testLibs.values()
 }
 
