@@ -44,7 +44,7 @@ private val appModule = module {
 
 }
 
-private val dataModule = module {
+val dataModule = module {
     factory { RegionRepository(get(), get()) }
     factory { BooksRepository(get(), get()) }
 }
