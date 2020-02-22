@@ -37,7 +37,8 @@ fun Application.initDI() {
 private val appModule = module {
     single { BookDatabase.build(get()) }
     factory<LocalDatasource> { RoomBooksDatasource(get()) }
-    factory { GoogleBooks() }
+    single(named("baseUrl")) { "https://www.googleapis.com/books/v1/" }
+    factory { GoogleBooks(get(named("baseUrl"))) }
     factory<RemoteDatasource> { GoogleBooksDatasource(get()) }
     factory<PermissionChecker> { AndroidPermissionChecker(get()) }
     factory<LocationDatasource> { PlayServicesLocationDatasource(get()) }

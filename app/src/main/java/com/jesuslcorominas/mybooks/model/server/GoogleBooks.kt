@@ -7,8 +7,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class GoogleBooks {
-    private val okHttpClient = HttpLoggingInterceptor().run {
+class GoogleBooks(baseUrl: String) {
+    val okHttpClient = HttpLoggingInterceptor().run {
         level = HttpLoggingInterceptor.Level.BODY
         OkHttpClient
             .Builder()
@@ -18,7 +18,7 @@ class GoogleBooks {
     }
 
     val service: GoogleBooksService = Retrofit.Builder()
-        .baseUrl("https://www.googleapis.com/books/v1/")
+        .baseUrl(baseUrl)
         .client(okHttpClient)
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .addConverterFactory(GsonConverterFactory.create())
