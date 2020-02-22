@@ -51,7 +51,6 @@ class DetailIntegrationTests : AutoCloseKoinTest() {
             factory { ToggleFavouriteBook(get()) }
             factory { ToggleReadBook(get()) }
             factory { ToggleCollectedBook(get()) }
-
         }
 
         initMockedDi(vmModule)
