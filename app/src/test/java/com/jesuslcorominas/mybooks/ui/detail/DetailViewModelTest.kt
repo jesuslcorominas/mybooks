@@ -11,11 +11,7 @@ import com.jesuslcorominas.mybooks.usecases.ToggleReadBook
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -29,8 +25,6 @@ class DetailViewModelTest {
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
-    private val mainThreadSurrogate = newSingleThreadContext("UI thread")
-
     @Mock
     lateinit var getBookDetail: GetBookDetail
 
@@ -43,7 +37,6 @@ class DetailViewModelTest {
     @Mock
     lateinit var toggleReadBook: ToggleReadBook
 
-
     @Mock
     lateinit var observerBook: Observer<Book>
 
@@ -51,32 +44,25 @@ class DetailViewModelTest {
 
     @Before
     fun setUp() {
-        Dispatchers.setMain(mainThreadSurrogate)
-
         vm = DetailViewModel(
             "uOZhYgEACAAJ",
             toggleCollectedBook,
             toggleFavouriteBook,
             toggleReadBook,
-            getBookDetail
+            getBookDetail,
+            Dispatchers.Unconfined
         )
     }
 
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
-        mainThreadSurrogate.close()
-    }
-
-
     @Test
     fun `observing LiveData finds the book`() {
-
         runBlocking {
             val book = mockedBook.copy(id = 1)
             whenever(getBookDetail.invoke("uOZhYgEACAAJ")).thenReturn(book)
 
             vm.book.observeForever(observerBook)
+
+            vm.getDetail()
 
             verify(observerBook).onChanged(vm.book.value)
         }
@@ -88,7 +74,10 @@ class DetailViewModelTest {
             val book = mockedBook.copy(id = 1)
             whenever(getBookDetail.invoke("uOZhYgEACAAJ")).thenReturn(book)
             whenever(toggleFavouriteBook.invoke(book)).thenReturn(book.copy(favourite = !book.favourite))
+
             vm.book.observeForever(observerBook)
+
+            vm.getDetail()
 
             vm.onFavouriteClicked()
 
@@ -104,6 +93,8 @@ class DetailViewModelTest {
             whenever(toggleReadBook.invoke(book)).thenReturn(book.copy(read = !book.read))
             vm.book.observeForever(observerBook)
 
+            vm.getDetail()
+
             vm.onReadClicked()
 
             verify(toggleReadBook).invoke(book)
@@ -116,7 +107,10 @@ class DetailViewModelTest {
             val book = mockedBook.copy(id = 1)
             whenever(getBookDetail.invoke("uOZhYgEACAAJ")).thenReturn(book)
             whenever(toggleCollectedBook.invoke(book)).thenReturn(book.copy(collected = !book.collected))
+
             vm.book.observeForever(observerBook)
+
+            vm.getDetail()
 
             vm.onCollectedClicked()
 
