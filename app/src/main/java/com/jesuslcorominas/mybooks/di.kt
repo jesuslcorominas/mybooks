@@ -18,6 +18,8 @@ import com.jesuslcorominas.mybooks.ui.detail.DetailViewModel
 import com.jesuslcorominas.mybooks.ui.main.MainActivity
 import com.jesuslcorominas.mybooks.ui.main.MainViewModel
 import com.jesuslcorominas.mybooks.usecases.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.android.viewmodel.dsl.viewModel
@@ -42,7 +44,7 @@ private val appModule = module {
     factory<RemoteDatasource> { GoogleBooksDatasource(get()) }
     factory<PermissionChecker> { AndroidPermissionChecker(get()) }
     factory<LocationDatasource> { PlayServicesLocationDatasource(get()) }
-
+    single<CoroutineDispatcher> { Dispatchers.Main }
 }
 
 val dataModule = module {
@@ -52,13 +54,13 @@ val dataModule = module {
 
 private val scopesModule = module {
     scope(named<MainActivity>()) {
-        viewModel { MainViewModel(get(), get()) }
+        viewModel { MainViewModel(get(), get(), get()) }
         scoped { GetStoredBooks(get()) }
         scoped { FindBooks(get(), get()) }
     }
 
     scope(named<DetailActivity>()) {
-        viewModel { (googleId: String) -> DetailViewModel(googleId, get(), get(), get(), get()) }
+        viewModel { (googleId: String) -> DetailViewModel(googleId, get(), get(), get(), get(), get()) }
         scoped { ToggleCollectedBook(get()) }
         scoped { ToggleFavouriteBook(get()) }
         scoped { ToggleReadBook(get()) }

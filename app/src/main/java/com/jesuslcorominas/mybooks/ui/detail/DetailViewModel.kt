@@ -8,6 +8,7 @@ import com.jesuslcorominas.mybooks.usecases.GetBookDetail
 import com.jesuslcorominas.mybooks.usecases.ToggleCollectedBook
 import com.jesuslcorominas.mybooks.usecases.ToggleFavouriteBook
 import com.jesuslcorominas.mybooks.usecases.ToggleReadBook
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
 
@@ -16,8 +17,9 @@ class DetailViewModel(
     private val toggleCollectedBook: ToggleCollectedBook,
     private val toggleFavouriteBook: ToggleFavouriteBook,
     private val toggleReadBook: ToggleReadBook,
-    private val getBookDetail: GetBookDetail
-) : ScopedViewModel() {
+    private val getBookDetail: GetBookDetail,
+    override val uiDispatcher: CoroutineDispatcher
+) : ScopedViewModel(uiDispatcher) {
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> get() = _loading

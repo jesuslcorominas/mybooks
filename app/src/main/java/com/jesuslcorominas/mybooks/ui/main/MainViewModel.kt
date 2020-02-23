@@ -7,12 +7,14 @@ import com.jesuslcorominas.mybooks.ui.common.Event
 import com.jesuslcorominas.mybooks.ui.common.ScopedViewModel
 import com.jesuslcorominas.mybooks.usecases.FindBooks
 import com.jesuslcorominas.mybooks.usecases.GetStoredBooks
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val getStoredBooks: GetStoredBooks,
-    private val findBooks: FindBooks
-) : ScopedViewModel() {
+    private val findBooks: FindBooks,
+    override val uiDispatcher: CoroutineDispatcher
+) : ScopedViewModel(uiDispatcher) {
 
     private val _books = MutableLiveData<List<Book>>()
     val books: LiveData<List<Book>> get() = _books
@@ -34,7 +36,7 @@ class MainViewModel(
         refresh()
     }
 
-    private fun refresh() {
+    fun refresh() {
         _requestLocationPermission.value = Event(Unit)
     }
 
