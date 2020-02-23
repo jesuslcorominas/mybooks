@@ -3,4 +3,8 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">books.google.com</domain>
     </domain-config>
+
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">localhost</domain>
+    </domain-config>
 </network-security-config>

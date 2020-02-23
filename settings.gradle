@@ -1,2 +1,2 @@
-include ':app', ':data', ':usecases', ':domain'
+include ':app', ':data', ':usecases', ':domain', ':testShared'
 rootProject.name='MyBooks'
