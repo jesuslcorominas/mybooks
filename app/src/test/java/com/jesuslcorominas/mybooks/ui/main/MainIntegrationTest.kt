@@ -48,7 +48,7 @@ class MainIntegrationTest : AutoCloseKoinTest() {
         Dispatchers.setMain(mainThreadSurrogate)
 
         val vmModule = module {
-            factory { MainViewModel(get(), get()) }
+            factory { MainViewModel(get(), get(), get()) }
             factory { GetStoredBooks(get()) }
             factory { FindBooks(get(), get()) }
         }

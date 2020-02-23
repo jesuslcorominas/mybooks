@@ -46,7 +46,7 @@ class DetailIntegrationTests : AutoCloseKoinTest() {
         Dispatchers.setMain(mainThreadSurrogate)
 
         val vmModule = module {
-            factory { (googleId: String) -> DetailViewModel(googleId, get(), get(), get(), get()) }
+            factory { (googleId: String) -> DetailViewModel(googleId, get(), get(), get(), get(), get()) }
             factory { GetBookDetail(get()) }
             factory { ToggleFavouriteBook(get()) }
             factory { ToggleReadBook(get()) }
