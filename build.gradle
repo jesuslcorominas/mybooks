@@ -44,7 +44,6 @@ allprojects {
 
         androidKaptLibs = [
                 roomCompiler : "androidx.room:room-compiler:$roomVersion",
-                glideCompiler: "com.github.bumptech.glide:compiler:4.9.0"
         ]
 
         kotlinLibs = [
